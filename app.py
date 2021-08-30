@@ -45,9 +45,9 @@ def Create_Recipe():
     if not request.json or not 'text' in request.json:
         abort(400)
     recipe = {
-        'id': len(recipes) + 1,
-        'text': request.json.get('text', ""),
-        'def': request.json.get('def', "")
+        'name': request.json.get('name', ""),
+        'ingredients': request.json.get('ingredients', ""),
+	'difficulty': request.json.get('difficulty', "")
     }
     recipes.append(recipe)
     return jsonify({'recipe': recipe}), 201
