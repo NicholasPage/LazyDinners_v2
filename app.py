@@ -58,7 +58,10 @@ def Create_Recipe():
 	"difficulty": request.json.get("difficulty", "")
     }
     recipes.append(recipe)
-    s3.put_object(Body = recipes, Bucket = my_bucket, Key = my_key)
+
+    newrecipes = json.dumps(recipes)
+
+    s3.put_object(Body = newrecipes, Bucket = my_bucket, Key = my_key)
     return jsonify({'Succesffuly added the recipe ': recipe["name"]}), 201
 	
 
