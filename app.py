@@ -59,7 +59,7 @@ def Create_Recipe():
     }
     recipes.append(recipe)
     s3.put_object(Body = recipes, Bucket = my_bucket, Key = my_key)
-    return jsonify({'Succesffuly added the recipe: ' recipe['name']}), 201
+    return jsonify({'Succesffuly added the recipe: ' recipe["name"]}), 201
 	
 
 @app.route('/recipe/api/v1.0/DeleteRecipeById/<int:id>', methods=['DELETE'])
