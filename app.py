@@ -41,8 +41,8 @@ def Get_Recipeoftheday():
 def Create_Recipe():
     """Adds a recipe to the list"""
 	#Example
-	#curl -H "Content-Type: application/json" -X POST -d '{"name":"recipename","ingredients":"ingredient1, ingredient2, ingredient3","side_ideas":"idea1, idea2, idea3""difficulty":"difficultylevel"}' http://localhost:5000/recipe/api/v1.0/newrecipe
-    if not request.json or not "name" in request.json:
+	#curl -H "Content-Type: application/json" -X POST -d '{"name":"recipename","ingredients":"ingredient1, ingredient2, ingredient3","side_ideas":"idea1, idea2, idea3","difficulty":"difficultylevel"}' http://localhost:5000/recipe/api/v1.0/newrecipe
+    if not request.json or not "name" in request.json or not "ingredients" in request.json or not "side_ideas" in request.json or not "difficulty" in request.json:
         abort(400)
     recipe = {
         "name": request.json.get("name", ""),
