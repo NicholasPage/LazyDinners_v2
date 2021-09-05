@@ -1,5 +1,5 @@
 #!flask/bin/python
-"""Now let's build a JSON from s3. Did someone say stateful?"""
+"""Now let's build from a JSON in s3. Did someone say stateful?"""
 import random
 import json
 import boto3
@@ -21,15 +21,7 @@ data += object_data
 
 recipes = data
 
-@app.route('/recipe/api/v1.0/recipe/<int:id>', methods=['GET'])
-def Get_Recipe(id):
-    """Return recipe by ID"""
-    if id not in range(1,len(recipes)):
-        abort(404)
-    recipe = recipes[id-1]
-    return jsonify({'recipe': recipe})
 
-	
 @app.route('/recipe/api/v1.0/recipe/allrecipes', methods=['GET'])
 def Get_Allrecipes():
     """Return all recipes"""
@@ -42,19 +34,20 @@ def Get_Recipeoftheday():
 	#Example
 	#curl -X GET http://localhost:5000/recipe/api/v1.0/recipe/recipeoftheday
     recipe = random.choice(recipes)
-    return jsonify({'Meal of the day': recipe['name']}, {'Ingredients': recipe['ingredients']}, {'Difficulty Level': recipe['difficulty']})
+    return jsonify({'Meal of the day': recipe['name']}, {'Ingredients': recipe['ingredients']}, {'Side Ideas': recipe['side_ideas']}, {'Difficulty Level': recipe['difficulty']})
 
 	
 @app.route('/recipe/api/v1.0/newrecipe', methods=['POST'])
 def Create_Recipe():
     """Adds a recipe to the list"""
 	#Example
-	#curl -H "Content-Type: application/json" -X POST -d '{"name":"recipename","ingredients":"ingredient1, ingredient2, ingredient3","difficulty":"difficultylevel"}' http://localhost:5000/recipe/api/v1.0/newrecipe
+	#curl -H "Content-Type: application/json" -X POST -d '{"name":"recipename","ingredients":"ingredient1, ingredient2, ingredient3","side_ideas":"idea1, idea2, idea3""difficulty":"difficultylevel"}' http://localhost:5000/recipe/api/v1.0/newrecipe
     if not request.json or not "name" in request.json:
         abort(400)
     recipe = {
         "name": request.json.get("name", ""),
         "ingredients": request.json.get("ingredients", ""),
+	"side_ideas": request.json.get("side_ideas", ""),
 	"difficulty": request.json.get("difficulty", "")
     }
     recipes.append(recipe)
@@ -63,16 +56,6 @@ def Create_Recipe():
 
     s3.put_object(Body = newrecipes, Bucket = my_bucket, Key = my_key)
     return jsonify({'Succesffuly added the recipe ': recipe["name"]}), 201
-	
-
-@app.route('/recipe/api/v1.0/DeleteRecipeById/<int:id>', methods=['DELETE'])
-def Delete_RecipeById(id):
-    """Delete a recipe with the provided recipeID"""
-    if id not in range(1,len(recipes)):
-        abort(404)
-    recipe = recipes[id-1]
-    recipes.remove(recipe)
-    return jsonify({'Successfully removed the recipe': recipe['name']})
 
 
 if __name__ == '__main__':
