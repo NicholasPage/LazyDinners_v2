@@ -22,13 +22,13 @@ data += object_data
 recipes = data
 
 
-@app.route('/recipe/api/v1.0/recipe/allrecipes', methods=['GET'])
+@app.route('/recipe/api/v2.0/recipe/allrecipes', methods=['GET'])
 def Get_Allrecipes():
     """Return all recipes"""
     return jsonify(recipes)
 
 	
-@app.route('/recipe/api/v1.0/recipe/recipeoftheday', methods=['GET'])
+@app.route('/recipe/api/v2.0/recipe/recipeoftheday', methods=['GET'])
 def Get_Recipeoftheday():
     """Return a random recipe"""
 	#Example
@@ -37,7 +37,7 @@ def Get_Recipeoftheday():
     return jsonify({'Meal of the day': recipe['name']}, {'Ingredients': recipe['ingredients']}, {'Side Ideas': recipe['side_ideas']}, {'Difficulty Level': recipe['difficulty']})
 
 	
-@app.route('/recipe/api/v1.0/newrecipe', methods=['POST'])
+@app.route('/recipe/api/v2.0/newrecipe', methods=['POST'])
 def Create_Recipe():
     """Adds a recipe to the list"""
 	#Example
